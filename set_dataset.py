@@ -28,8 +28,7 @@ class Setter:
 
     def adapt_layer(self):
         logging.debug('[LOG] ADAPT LAYER')
-        train_text = self.dataset.map(lambda text, labels: text)
-        self.vectors.binary_vectorize_layer.adapt(train_text)
+        self.vectors.binary_vectorize_layer.adapt(self.dataset)
 
     def pre_treatment(self) -> Dataset:
         binary_train_dataset = self.dataset.map(self.vectors.binary_vectorize_text)
