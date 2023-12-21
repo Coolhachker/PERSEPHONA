@@ -2,8 +2,7 @@ import logging
 import tensorflow.python.data
 import tensorflow as tf
 from vectorization import Vectorization
-from keras.utils import text_dataset_from_directory
-from tensorflow.python.data import Dataset
+from tensorflow.python.data import Dataset, TextLineDataset
 import os
 logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG)
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -20,15 +19,12 @@ class Setter:
 
     @property
     def set_dataset(self) -> Dataset:
-        train_dataset = text_dataset_from_directory(
-            directory=self.train_dir,
-            batch_size=64,
-            validation_split=0.2,
-            subset='training',
-            seed=84
-        )
-        logging.debug('[LOG] SET DATASET')
-        return train_dataset
+        try:
+            train_dataset = TextLineDataset([self.train_dir])
+            logging.debug('[LOG] SET DATASET')
+            return train_dataset
+        except ValueError:
+            pass
 
     def adapt_layer(self):
         logging.debug('[LOG] ADAPT LAYER')

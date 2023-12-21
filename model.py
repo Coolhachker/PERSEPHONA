@@ -12,7 +12,7 @@ logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG)
 
 class BinaryModel:
     def __init__(self):
-        self.setter_dataset = Setter('data/')
+        self.setter_dataset = Setter('data')
         self.binary_model = self.set_binary_model()
         self.vocabulary = self.setter_dataset.vectors.binary_vectorize_layer.get_vocabulary()
         self.compile_binary_model()
