@@ -14,7 +14,7 @@ class Vectorization:
     def do_binary_vector_layer() -> TextVectorization:
         binary_vectorize_layer = TextVectorization(
             max_tokens=10000,
-            output_mode='binary'
+            output_mode='binary',
         )
         logging.debug('[LOG] MAKE BINARY LAYER')
         return binary_vectorize_layer

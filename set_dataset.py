@@ -2,7 +2,7 @@ import logging
 import tensorflow.python.data
 import tensorflow as tf
 from vectorization import Vectorization
-from tensorflow.python.data import Dataset, TextLineDataset
+from tensorflow.python.data import Dataset, TFRecordDataset, TextLineDataset
 import os
 logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG)
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
