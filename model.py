@@ -1,6 +1,6 @@
 from set_dataset import Setter
 from keras.layers import Dense, Dropout, LSTM
-from keras import Model
+from keras import Model, Sequential
 from keras.losses import SparseCategoricalCrossentropy
 from keras.callbacks import ModelCheckpoint
 import os
@@ -12,19 +12,17 @@ logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG)
 
 class BinaryModel:
     def __init__(self):
-        self.setter_dataset = Setter('data/habr_data_training/habr_DEVELOP.txt')
+        self.setter_dataset = Setter('data/habr_data_training/file1.txt')
+        self.vocabulary = self.setter_dataset.vectors.binary_vectorize_layer.vocabulary_size()
         self.binary_model = self.set_binary_model()
-        self.vocabulary = self.setter_dataset.vectors.binary_vectorize_layer.get_vocabulary()
         self.compile_binary_model()
         self.checkpoint_callback = self.check_points()
         self.fit_model()
 
     def set_binary_model(self) -> Model:
-        model = Model(([
-            Dropout(0.5),
-            LSTM(1024),
+        model = Sequential([
             Dense(self.vocabulary)
-        ]))
+        ])
         logging.debug('[LOG] SET BINARY MODEL')
         return model
 
@@ -48,7 +46,7 @@ class BinaryModel:
 
     def fit_model(self):
         logging.debug('[LOG] FIT MODEL')
-        self.binary_model.fit(self.setter_dataset.binary_train_dataset, epochs=100, callbacks=[self.checkpoint_callback])
+        history = self.binary_model.fit(self.setter_dataset.binary_train_dataset, epochs=10, callbacks=[self.checkpoint_callback])
 
 
 if __name__ == '__main__':

@@ -2,7 +2,7 @@ import logging
 import tensorflow.python.data
 import tensorflow as tf
 from vectorization import Vectorization
-from tensorflow.python.data import Dataset, TFRecordDataset, TextLineDataset
+from tensorflow.python.data import Dataset, TFRecordDataset, TextLineDataset, AUTOTUNE
 import os
 logging.basicConfig(filename='log.log', filemode='w', level=logging.DEBUG)
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -36,5 +36,5 @@ class Setter:
 
     def configure_dataset(self) -> Dataset:
         logging.debug('[LOG] CONFIGURE DATASET')
-        return self.binary_train_dataset.cache().prefetch(buffer_size=tf.python.data.AUTOTUNE)
+        return self.binary_train_dataset.cache().prefetch(buffer_size=AUTOTUNE)
 
