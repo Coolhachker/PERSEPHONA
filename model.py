@@ -1,7 +1,7 @@
 from set_dataset import Setter
-from keras.layers import Dense, Dropout, LSTM
+from keras.layers import Dense, Dropout, LSTM, Activation, Embedding
 from keras import Model, Sequential
-from keras.losses import SparseCategoricalCrossentropy
+from keras.losses import SparseCategoricalCrossentropy, BinaryCrossentropy
 from keras.callbacks import ModelCheckpoint
 import os
 import logging
@@ -21,6 +21,8 @@ class BinaryModel:
 
     def set_binary_model(self) -> Model:
         model = Sequential([
+            Embedding(self.vocabulary, 256),
+            LSTM(1024),
             Dense(self.vocabulary)
         ])
         logging.debug('[LOG] SET BINARY MODEL')
@@ -46,7 +48,7 @@ class BinaryModel:
 
     def fit_model(self):
         logging.debug('[LOG] FIT MODEL')
-        history = self.binary_model.fit(self.setter_dataset.binary_train_dataset, epochs=10, callbacks=[self.checkpoint_callback])
+        self.binary_model.fit(self.setter_dataset.binary_train_dataset, epochs=10, callbacks=[self.checkpoint_callback])
 
 
 if __name__ == '__main__':

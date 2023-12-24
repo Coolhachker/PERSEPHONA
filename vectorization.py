@@ -19,6 +19,8 @@ class Vectorization:
         logging.debug('[LOG] MAKE BINARY LAYER')
         return binary_vectorize_layer
 
-    def binary_vectorize_text(self, text):
-        text = tf.expand_dims(text, -1)
-        return self.binary_vectorize_layer(text)
+    @staticmethod
+    def binary_vectorize_text(text):
+        input_text = text[:-1]
+        target_text = text[1:]
+        return input_text, target_text

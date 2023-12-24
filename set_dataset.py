@@ -16,13 +16,15 @@ class Setter:
         self.adapt_layer()
         self.binary_train_dataset = self.pre_treatment()
         self.binary_train_dataset = self.configure_dataset()
+        logging.debug(f'configure_dataset={self.binary_train_dataset}')
 
     @property
-    def set_dataset(self) -> Dataset:
+    def set_dataset(self) -> list:
         try:
-            train_dataset = TextLineDataset([self.train_dir])
+            train_text = open(self.train_dir, 'r').readlines()
+            logging.debug(f'set_dataset()={train_text}')
             logging.debug('[LOG] SET DATASET')
-            return train_dataset
+            return train_text
         except ValueError:
             pass
 
@@ -31,10 +33,18 @@ class Setter:
         self.vectors.binary_vectorize_layer.adapt(self.dataset)
 
     def pre_treatment(self) -> Dataset:
-        binary_train_dataset = self.dataset.map(self.vectors.binary_vectorize_text)
+        all_ids = self.vectors.binary_vectorize_layer(self.dataset)
+        print(all_ids)
+        self.dataset = Dataset.from_tensor_slices(all_ids)
+        print(self.dataset)
+        seq = self.dataset.batch(100, drop_remainder=True)
+        print(seq)
+        binary_train_dataset = seq.map(self.vectors.binary_vectorize_text)
+        print(binary_train_dataset)
+        logging.debug(f'pre_treatment={binary_train_dataset}')
         return binary_train_dataset
 
     def configure_dataset(self) -> Dataset:
         logging.debug('[LOG] CONFIGURE DATASET')
-        return self.binary_train_dataset.cache().prefetch(buffer_size=AUTOTUNE)
+        return self.binary_train_dataset.shuffle(10000).batch(32, drop_remainder=True).prefetch(AUTOTUNE)
 
