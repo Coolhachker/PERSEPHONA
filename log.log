@@ -1,10 +1,10 @@
 DEBUG:root:[LOG] MAKE BINARY LAYER
-DEBUG:root:set_dataset()=['test\n', 'file\n', 'for\n', 'adapt\n', 'layer']
+DEBUG:root:set_dataset()=['test train dataset adapt\n', 'file\n', 'for\n', 'adapt\n', 'layer\n', 'model']
 DEBUG:root:[LOG] SET DATASET
 DEBUG:root:[LOG] ADAPT LAYER
-DEBUG:root:pre_treatment=<_MapDataset element_spec=(TensorSpec(shape=(99, 6), dtype=tf.float32, name=None), TensorSpec(shape=(99, 6), dtype=tf.float32, name=None))>
+DEBUG:root:pre_treatment=<_MapDataset element_spec=(TensorSpec(shape=(3,), dtype=tf.int64, name=None), TensorSpec(shape=(3,), dtype=tf.int64, name=None))>
 DEBUG:root:[LOG] CONFIGURE DATASET
-DEBUG:root:configure_dataset=<_PrefetchDataset element_spec=(TensorSpec(shape=(32, 99, 6), dtype=tf.float32, name=None), TensorSpec(shape=(32, 99, 6), dtype=tf.float32, name=None))>
+DEBUG:root:configure_dataset=<_MapDataset element_spec=(TensorSpec(shape=(3,), dtype=tf.int64, name=None), TensorSpec(shape=(3,), dtype=tf.int64, name=None))>
 DEBUG:root:[LOG] SET BINARY MODEL
 DEBUG:root:[LOG] COMPILE MODEL
 DEBUG:root:[LOG] CREATE CHECKPOINTS
