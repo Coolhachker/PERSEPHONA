@@ -4,7 +4,7 @@ from tensorflow.python.data import Dataset
 from tensorflow.python.data.experimental import AUTOTUNE
 
 
-class __Dataset:
+class DATASET:
     def __init__(self, path_to_file=''):
         self.seq_length = 5
         self.batch_size = 64
@@ -17,8 +17,6 @@ class __Dataset:
 
         self.dataset_from_ids = self.set_dataset()
         self.sequences = self.set_sequences()
-
-        self.dataset = self.set_packets_for_train(self.sequences.map(self.split_input_target_data))
 
     def set_ids(self):
         return self.layers.ids_from_chars_layer(unicode_split(self.text, 'UTF-8'))
@@ -39,6 +37,5 @@ class __Dataset:
     def set_packets_for_train(self, dataset_: Dataset):
         return dataset_.shuffle(self.buffer_size).batch(self.batch_size).prefetch(AUTOTUNE)
 
-
-if __name__ == '__main__':
-    dataset = __Dataset()
+    def return_dataset(self):
+        return self.set_packets_for_train(self.sequences.map(self.split_input_target_data))
