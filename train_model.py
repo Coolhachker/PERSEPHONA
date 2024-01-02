@@ -16,6 +16,7 @@ class Education:
         self.model = PERSEPHONA(vocab_size, embedding_dim, rnn_units)
         self.compile_model()
         self.checkpoint_callback = self.create_checkpoints()
+        self.fit_model()
 
     def compile_model(self):
         self.model.compile(
@@ -32,6 +33,6 @@ class Education:
             save_weights_only=True
         )
 
+    def fit_model(self):
+        self.model.fit(self.dataset, epochs=20, callbacks=[self.checkpoint_callback])
 
-if __name__ == '__main__':
-    education = Education()
