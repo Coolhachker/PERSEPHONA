@@ -34,5 +34,5 @@ class Education:
         )
 
     def fit_model(self):
-        self.model.fit(self.dataset, epochs=20, callbacks=[self.checkpoint_callback])
+        self.model.fit(self.dataset, epochs=50, callbacks=[self.checkpoint_callback])
 

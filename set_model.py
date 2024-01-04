@@ -23,10 +23,9 @@ class PERSEPHONA(Model):
         x = self.embedding(x, training=training)
         if states is None:
             states = self.lstm.get_initial_state(x)
-
         x, final_memory_state, final_carry_state = self.lstm(x, initial_state=states, training=training)
         x = self.dense(x, training=training)
         if return_state:
-            return x, (final_memory_state, final_carry_state)
+            return x, [final_memory_state, final_carry_state]
         else:
             return x

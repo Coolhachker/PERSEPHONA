@@ -6,8 +6,8 @@ from tensorflow.python.data.experimental import AUTOTUNE
 
 class DATASET:
     def __init__(self, path_to_file=''):
-        self.seq_length = 5
-        self.batch_size = 1
+        self.seq_length = 10
+        self.batch_size = 15
         self.buffer_size = 10000
 
         self.text = open('data/habr_data_training/file1.txt', 'rb').read().decode(encoding='utf-8')
@@ -25,7 +25,7 @@ class DATASET:
         return Dataset.from_tensor_slices(self.all_ids)
 
     def set_sequences(self):
-        return self.dataset_from_ids.batch(self.seq_length+1, drop_remainder=False)
+        return self.dataset_from_ids.batch(self.seq_length+1, drop_remainder=True)
 
     @staticmethod
     def split_input_target_data(sequences):
@@ -35,7 +35,7 @@ class DATASET:
         return input_text, target_text
 
     def set_packets_for_train(self, dataset_: Dataset):
-        return dataset_.shuffle(self.buffer_size).batch(self.batch_size, drop_remainder=False).prefetch(AUTOTUNE)
+        return dataset_.shuffle(self.buffer_size).batch(self.batch_size, drop_remainder=True).prefetch(AUTOTUNE)
 
     def return_dataset(self):
         return self.set_packets_for_train(self.sequences.map(self.split_input_target_data))
