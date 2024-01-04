@@ -55,6 +55,10 @@ def generate_text(__input__: str):
     return join(result)[0].numpy().decode('utf-8')
 
 
+if __name__ == '__main__':
+    print(generate_text('computer'))
+
+
 
 
 

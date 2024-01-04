@@ -2,24 +2,28 @@ from vectorization_data import Vectorization
 from tensorflow._api.v2.strings import unicode_split
 from tensorflow.python.data import Dataset
 from tensorflow.python.data.experimental import AUTOTUNE
+from tensorflow import constant, concat
 
 
 class DATASET:
-    def __init__(self, path_to_file=''):
-        self.seq_length = 100
+    def __init__(self, path_to_file='data/habr_data_training/file1.txt'):
+        self.seq_length = 40
         self.batch_size = 64
         self.buffer_size = 10000
 
-        self.text = open('data/habr_data_training/habr_DEVELOP.txt', 'rb').read().decode(encoding='utf-8')
+        self.path = path_to_file
 
-        self.layers = Vectorization(self.text)
-        self.all_ids = self.set_ids()
+        self.layers = Vectorization(path_to_file)
+        self.all_ids = constant([0], dtype='int64')
+        self.set_ids()
 
         self.dataset_from_ids = self.set_dataset()
         self.sequences = self.set_sequences()
 
     def set_ids(self):
-        return self.layers.ids_from_chars_layer(unicode_split(self.text, 'UTF-8'))
+        with open(self.path, 'r') as data:
+            for string in data:
+                self.all_ids = concat([self.all_ids, self.layers.ids_from_chars_layer(unicode_split(string, 'UTF-8'))], axis=0)
 
     def set_dataset(self):
         return Dataset.from_tensor_slices(self.all_ids)

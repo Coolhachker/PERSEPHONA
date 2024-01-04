@@ -1,10 +1,11 @@
 from keras.layers import StringLookup
 from tensorflow._api.v2.strings import reduce_join
+import numpy as np
 
 
 class Vectorization:
-    def __init__(self, data):
-        self.vocab = sorted(set(data))
+    def __init__(self, path):
+        self.path = path
         self.ids_from_chars_layer = self.ids_from_chars()
         self.chars_from_ids_layer = self.chars_from_ids()
 
@@ -14,8 +15,15 @@ class Vectorization:
 
         :return: Возвращает слой, в котором находятся все векторы символов
         """
+
+        with open(self.path, 'r') as data:
+            vocab = []
+            for string in data:
+                vocab.extend(sorted(set(string)))
+                vocab = list(sorted(set(vocab)))
+
         return StringLookup(
-            vocabulary=list(self.vocab),
+            vocabulary=list(sorted(set(vocab))),
             mask_token=None
         )
 
