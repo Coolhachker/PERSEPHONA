@@ -6,11 +6,11 @@ from tensorflow.python.data.experimental import AUTOTUNE
 
 class DATASET:
     def __init__(self, path_to_file=''):
-        self.seq_length = 10
-        self.batch_size = 15
+        self.seq_length = 40
+        self.batch_size = 64
         self.buffer_size = 10000
 
-        self.text = open('data/habr_data_training/file1.txt', 'rb').read().decode(encoding='utf-8')
+        self.text = open('data/habr_data_training/habr_DEVELOP.txt', 'rb').read().decode(encoding='utf-8')
 
         self.layers = Vectorization(self.text)
         self.all_ids = self.set_ids()

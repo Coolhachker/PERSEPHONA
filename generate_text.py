@@ -5,9 +5,10 @@ from tensorflow._api.v2.strings import unicode_split, join
 from tensorflow._api.v2.random import categorical
 from tensorflow import squeeze, constant
 import tensorflow as tf
+from tensorflow import saved_model
 
 
-class OneStepPERSEPHONA(Model):
+class GenerateTextOneStepPERSEPHONA(Model):
     def __init__(self):
         super().__init__()
         self.temperature = 1.0
@@ -41,17 +42,17 @@ class OneStepPERSEPHONA(Model):
         return predicted_chars, states_cell
 
 
-if __name__ == '__main__':
-    generator = OneStepPERSEPHONA()
+def generate_text(__input__: str):
+    persephona = saved_model.load("PERSEPHONA")
     states = None
-    next_char = constant(['Цель'])
+    next_char = constant([__input__])
     result = [next_char]
 
-    for n in range(50):
-        next_char, states = generator.generate_text_one_step_model(next_char, state=states)
+    for n in range(100):
+        next_char, states = persephona.generate_text_one_step_model(next_char, state=states)
         result.append(next_char)
 
-    print(join(result)[0].numpy().decode('utf-8'))
+    return join(result)[0].numpy().decode('utf-8')
 
 
 

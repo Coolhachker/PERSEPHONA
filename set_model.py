@@ -1,5 +1,6 @@
 from keras.models import Model
 from keras.layers import Embedding, LSTM, Dense
+from tensorflow import GradientTape
 
 
 class PERSEPHONA(Model):
@@ -29,3 +30,15 @@ class PERSEPHONA(Model):
             return x, [final_memory_state, final_carry_state]
         else:
             return x
+
+    def train_step(self, data):
+        inputs, target = data
+
+        with GradientTape() as tape:
+            predictions = self(inputs, training=True)
+            loss = self.loss(target, predictions)
+
+        grads = tape.gradient(loss, self.trainable_variables)
+        self.optimizer.apply_gradients(zip(grads, self.trainable_variables))
+
+        return {'loss': loss}
