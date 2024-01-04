@@ -6,7 +6,7 @@ from tensorflow.python.data.experimental import AUTOTUNE
 
 class DATASET:
     def __init__(self, path_to_file=''):
-        self.seq_length = 40
+        self.seq_length = 100
         self.batch_size = 64
         self.buffer_size = 10000
 
