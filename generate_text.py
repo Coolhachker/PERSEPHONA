@@ -48,7 +48,7 @@ def generate_text(__input__: str):
     next_char = constant([__input__])
     result = [next_char]
 
-    for n in range(100):
+    for n in range(250):
         next_char, states = persephona.generate_text_one_step_model(next_char, state=states)
         result.append(next_char)
 
