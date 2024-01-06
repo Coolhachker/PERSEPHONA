@@ -1,6 +1,5 @@
 from keras.layers import StringLookup
 from tensorflow._api.v2.strings import reduce_join
-import numpy as np
 
 
 class Vectorization:

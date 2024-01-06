@@ -6,8 +6,8 @@ from tensorflow import constant, concat
 
 
 class DATASET:
-    def __init__(self, path_to_file='data/habr_data_training/file1.txt'):
-        self.seq_length = 40
+    def __init__(self, path_to_file='data/habr_data_training/habr_DEVELOP.txt'):
+        self.seq_length = 100
         self.batch_size = 64
         self.buffer_size = 10000
 

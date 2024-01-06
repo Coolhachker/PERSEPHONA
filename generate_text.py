@@ -5,7 +5,7 @@ from tensorflow._api.v2.strings import unicode_split, join
 from tensorflow._api.v2.random import categorical
 from tensorflow import squeeze, constant
 import tensorflow as tf
-from tensorflow import saved_model
+from tensorflow import saved_model, TensorSpec, float32, string, Tensor
 
 
 class GenerateTextOneStepPERSEPHONA(Model):
@@ -25,7 +25,8 @@ class GenerateTextOneStepPERSEPHONA(Model):
         self.prediction_mask = tf.sparse.to_dense(sparse_mask)
 
     @function
-    def generate_text_one_step_model(self, inputs, state=None):
+    def generate_text_one_step_model(self, inputs, state1=None, state2=None):
+        state = [state1, state2] if state1 is not None and state2 is not None else None
         input_ids = self.ids_from_chars_layer(unicode_split(inputs, 'UTF-8'))
 
         predicted_logits, states_cell = self.model(inputs=input_ids, states=state, return_state=True)
@@ -39,24 +40,26 @@ class GenerateTextOneStepPERSEPHONA(Model):
 
         predicted_chars = self.chars_from_ids_layer(predicted_ids)
 
-        return predicted_chars, states_cell
+        return predicted_chars, states_cell[0], states_cell[1]
 
 
 def generate_text(__input__: str):
     persephona = saved_model.load("PERSEPHONA")
-    states = None
+    state1 = None
+    state2 = None
     next_char = constant([__input__])
     result = [next_char]
 
     for n in range(250):
-        next_char, states = persephona.generate_text_one_step_model(next_char, state=states)
+        next_char, state1, state2 = persephona.generate_text_one_step_model(next_char, state1=state1, state2=state2)
         result.append(next_char)
 
     return join(result)[0].numpy().decode('utf-8')
 
 
 if __name__ == '__main__':
-    print(generate_text('computer'))
+    print(generate_text('программирование'))
+
 
 
 

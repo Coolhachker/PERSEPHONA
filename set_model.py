@@ -1,6 +1,7 @@
 from keras.models import Model
 from keras.layers import Embedding, LSTM, Dense
 from tensorflow import GradientTape
+from keras.metrics import Accuracy
 
 
 class PERSEPHONA(Model):
@@ -18,6 +19,7 @@ class PERSEPHONA(Model):
         self.dense = Dense(
             vocab_size
         )
+        self.metric = Accuracy()
 
     def call(self, inputs, states=None, return_state=False, training=False):
         x = inputs
