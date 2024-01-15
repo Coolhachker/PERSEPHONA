@@ -19,6 +19,11 @@ class Education:
         self.fit_model()
 
     def compile_model(self):
+        """
+        Функция компилирует модель.
+
+        :return:
+        """
         self.model.compile(
             optimizer='adam',
             loss=SparseCategoricalCrossentropy(from_logits=True),
@@ -27,6 +32,11 @@ class Education:
 
     @staticmethod
     def create_checkpoints():
+        """
+        Функция создает checkpoints для сохранения модели на время обучения
+
+        :return:
+        """
         checkpoints_prefix = os.path.join('checkpoints', 'ckpt_{epoch}')
         return ModelCheckpoint(
             filepath=checkpoints_prefix,
@@ -34,5 +44,10 @@ class Education:
         )
 
     def fit_model(self):
+        """
+        Обучение модели
+
+        :return:
+        """
         self.model.fit(self.dataset, epochs=20, callbacks=[self.checkpoint_callback])
 

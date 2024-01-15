@@ -1,6 +1,8 @@
 from tensorflow import saved_model
 from generate_text import GenerateTextOneStepPERSEPHONA
 from tensorflow import constant
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 
 def save_model():

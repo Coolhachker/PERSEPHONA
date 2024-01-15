@@ -1,7 +1,8 @@
 from keras.models import Model
 from keras.layers import Embedding, LSTM, Dense
-from tensorflow import GradientTape
+from tensorflow import GradientTape, argmax
 from keras.metrics import Accuracy
+import numpy
 
 
 class PERSEPHONA(Model):
@@ -22,6 +23,15 @@ class PERSEPHONA(Model):
         self.metric = Accuracy()
 
     def call(self, inputs, states=None, return_state=False, training=False):
+        """
+        Когда идет обращение к экземпляру класса, то идет обращение к этой функции при помощи перегрузки оператор __call__(...)
+
+        :param inputs: Тензор данных
+        :param states: состояние на прошлом шаге. [state1, stat2]
+        :param return_state:
+        :param training:
+        :return:
+        """
         x = inputs
         x = self.embedding(x, training=training)
         if states is None:
@@ -34,6 +44,12 @@ class PERSEPHONA(Model):
             return x
 
     def train_step(self, data):
+        """
+        Функция для кастомного обучения. В этом случае обучение на градиенте ошибок.
+
+        :param data:
+        :return:
+        """
         inputs, target = data
 
         with GradientTape() as tape:

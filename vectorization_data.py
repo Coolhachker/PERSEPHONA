@@ -1,5 +1,6 @@
 from keras.layers import StringLookup
 from tensorflow._api.v2.strings import reduce_join
+import logging
 
 
 class Vectorization:
@@ -17,9 +18,16 @@ class Vectorization:
 
         with open(self.path, 'r') as data:
             vocab = []
+            count: int = 0
             for string in data:
-                vocab.extend(sorted(set(string)))
-                vocab = list(sorted(set(vocab)))
+                if count < 10000:
+                    vocab.extend(sorted(set(string)))
+                    vocab = list(sorted(set(vocab)))
+                    count += 1
+                    if count % 100 == 0:
+                        logging.info(f'[LAYER] Count is {count}/10000')
+                else:
+                    break
 
         return StringLookup(
             vocabulary=list(sorted(set(vocab))),
