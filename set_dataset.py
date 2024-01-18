@@ -4,12 +4,11 @@ from tensorflow.python.data import Dataset
 from tensorflow.python.data.experimental import AUTOTUNE
 from tensorflow import constant, concat
 import logging
-logging.basicConfig(filename='data/log.log', filemode='w', level=logging.DEBUG)
 
 
 class DATASET:
     def __init__(self, path_to_file='data/habr_data_training/habr_DEVELOP.txt'):
-        self.seq_length = 40
+        self.seq_length = 100
         self.batch_size = 64
         self.buffer_size = 10000
 
@@ -31,11 +30,11 @@ class DATASET:
         with open(self.path, 'r') as data:
             count: int = 0
             for string in data:
-                if count < 10000:
+                if count < 20000:
                     self.all_ids = concat([self.all_ids, self.layers.ids_from_chars_layer(unicode_split(string, 'UTF-8'))], axis=0)
                     count += 1
                     if count % 100 == 0:
-                        logging.info(f'[DATASET] Count is {count}/10000')
+                        logging.info(f'[DATASET] Count is {count}/20000')
                 else:
                     break
 

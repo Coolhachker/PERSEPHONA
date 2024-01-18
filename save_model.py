@@ -2,6 +2,9 @@ from tensorflow import saved_model
 from generate_text import GenerateTextOneStepPERSEPHONA
 from tensorflow import constant
 import os
+import logging
+logging.basicConfig(filename='data/log.log', filemode='w', level=logging.DEBUG)
+
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 

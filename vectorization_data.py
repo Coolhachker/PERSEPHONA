@@ -20,12 +20,12 @@ class Vectorization:
             vocab = []
             count: int = 0
             for string in data:
-                if count < 10000:
+                if count < 20000:
                     vocab.extend(sorted(set(string)))
                     vocab = list(sorted(set(vocab)))
                     count += 1
                     if count % 100 == 0:
-                        logging.info(f'[LAYER] Count is {count}/10000')
+                        logging.info(f'[LAYER] Count is {count}/20000')
                 else:
                     break
 
