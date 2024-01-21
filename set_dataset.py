@@ -23,24 +23,24 @@ class DATASET:
 
     def set_ids(self):
         """
-        Функция векторизирует str символы в id значение
+        Функция векторизует str символы в id значение
 
         :return:
         """
         with open(self.path, 'r') as data:
             count: int = 0
             for string in data:
-                if count < 20000:
+                if count < 50000:
                     self.all_ids = concat([self.all_ids, self.layers.ids_from_chars_layer(unicode_split(string, 'UTF-8'))], axis=0)
                     count += 1
                     if count % 100 == 0:
-                        logging.info(f'[DATASET] Count is {count}/20000')
+                        logging.info(f'[DATASET] Count is {count}/50000')
                 else:
                     break
 
     def set_dataset(self):
         """
-        Функция создает Dataset из тензора векторизированных данных
+        Функция создает Dataset из тензора векторизованных данных
 
         :return:
         """
@@ -49,7 +49,6 @@ class DATASET:
     def set_sequences(self):
         """
         Функция создает пакеты данных из Dataset
-
         :return:
         """
         return self.dataset_from_ids.batch(self.seq_length+1, drop_remainder=True)
