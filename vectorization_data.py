@@ -4,8 +4,9 @@ import logging
 
 
 class Vectorization:
-    def __init__(self, path):
+    def __init__(self, path, max_limit):
         self.path = path
+        self.max_limit = max_limit
         self.ids_from_chars_layer = self.ids_from_chars()
         self.chars_from_ids_layer = self.chars_from_ids()
 
@@ -20,12 +21,12 @@ class Vectorization:
             vocab = []
             count: int = 0
             for string in data:
-                if count < 50000:
+                if count < self.max_limit:
                     vocab.extend(sorted(set(string)))
                     vocab = list(sorted(set(vocab)))
                     count += 1
                     if count % 100 == 0:
-                        logging.info(f'[LAYER] Count is {count}/50000')
+                        logging.info(f'[LAYER] Count is {count}/{self.max_limit}')
                 else:
                     break
 

@@ -11,10 +11,11 @@ class DATASET:
         self.seq_length = 100
         self.batch_size = 64
         self.buffer_size = 10000
+        self.max_limit = 150000
 
         self.path = path_to_file
 
-        self.layers = Vectorization(path_to_file)
+        self.layers = Vectorization(path_to_file, self.max_limit)
         self.all_ids = constant([0], dtype='int64')
         self.set_ids()
 
@@ -30,11 +31,11 @@ class DATASET:
         with open(self.path, 'r') as data:
             count: int = 0
             for string in data:
-                if count < 50000:
+                if count < self.max_limit:
                     self.all_ids = concat([self.all_ids, self.layers.ids_from_chars_layer(unicode_split(string, 'UTF-8'))], axis=0)
                     count += 1
                     if count % 100 == 0:
-                        logging.info(f'[DATASET] Count is {count}/50000')
+                        logging.info(f'[DATASET] Count is {count}/{self.max_limit}')
                 else:
                     break
 
