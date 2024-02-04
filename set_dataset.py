@@ -11,7 +11,7 @@ class DATASET:
         self.seq_length = 100
         self.batch_size = 64
         self.buffer_size = 10000
-        self.max_limit = 150000
+        self.max_limit = 2000000
 
         self.path = path_to_file
 
