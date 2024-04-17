@@ -6,16 +6,19 @@ from tensorflow._api.v2.random import categorical
 from tensorflow import squeeze, constant
 import tensorflow as tf
 from tensorflow import saved_model, TensorSpec, float32, string, Tensor
+from tensorflow import saved_model
+from vectorization_data import Vectorization
 
 
 class GenerateTextOneStepPERSEPHONA(Model):
     def __init__(self):
         super().__init__()
         self.temperature = 1.0
-        self.education = Education()
-        self.model = self.education.model
-        self.ids_from_chars_layer = self.education.dataset_obj.layers.ids_from_chars_layer
-        self.chars_from_ids_layer = self.education.dataset_obj.layers.chars_from_ids_layer
+        # self.education = Education()
+        vectorization_layers = Vectorization('data/habr_data_training/habr_DEVELOP.txt', 2000000)
+        self.model = saved_model.load('PERSEPHONA_R')
+        self.ids_from_chars_layer = vectorization_layers.ids_from_chars_layer
+        self.chars_from_ids_layer = vectorization_layers.chars_from_ids_layer
 
         skip_ids = self.ids_from_chars_layer(['[UNK]'])[:, None]
         sparse_mask = tf.SparseTensor(
