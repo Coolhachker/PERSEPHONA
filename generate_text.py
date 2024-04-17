@@ -8,6 +8,7 @@ import tensorflow as tf
 from tensorflow import saved_model, TensorSpec, float32, string, Tensor
 from tensorflow import saved_model
 from vectorization_data import Vectorization
+from get_saved_model_by_checkpoints import get_saved_model
 
 
 class GenerateTextOneStepPERSEPHONA(Model):
@@ -16,7 +17,7 @@ class GenerateTextOneStepPERSEPHONA(Model):
         self.temperature = 1.0
         # self.education = Education()
         vectorization_layers = Vectorization('data/habr_data_training/habr_DEVELOP.txt', 2000000)
-        self.model = saved_model.load('PERSEPHONA_R')
+        self.model = get_saved_model()
         self.ids_from_chars_layer = vectorization_layers.ids_from_chars_layer
         self.chars_from_ids_layer = vectorization_layers.chars_from_ids_layer
 
