@@ -19,6 +19,10 @@ def get_saved_model():
 
     persephona.load_weights(latest_checkpoint)
 
+    persephona.compile()
+
+    x, state = persephona(inputs=__input__, return_state=True)
+
     saved_model.save(persephona, "PERSEPHONA_R")
 
 
